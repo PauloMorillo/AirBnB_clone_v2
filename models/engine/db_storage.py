@@ -35,10 +35,8 @@ class DBStorage:
             returns a dictionary of __object
         """
         a = dict()
-        clasesitas = ["State", "City", "User", "Place"]
-        # 'User': User,
+        clasesitas = ["State", "City", "User", "Place", "Review"]
         # 'Amenity': Amenity,
-        # 'Place': Place,
         # 'Review': Review}
         # if cls != None:
         # objre = self.__session.query(cls.__name__).all()
