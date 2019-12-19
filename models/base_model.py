@@ -7,14 +7,17 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
-Base = declarative_base()
+if os.environ.get('HBNB_TYPE_STORAGE') == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
-    if os.getenv('HBNB_TYPE_STORAGE') == "db":
+    if os.environ.get('HBNB_TYPE_STORAGE') == "db":
         id = Column(String(60), primary_key=True, nullable=False)
         created_at = Column(DateTime,
                             default=datetime.utcnow(),
@@ -49,8 +52,12 @@ class BaseModel:
         Return:
             returns a string of class name, id, and dictionary
         """
-        return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.to_dict())
+        if os.environ.get('HBNB_TYPE_STORAGE') == "db":
+            return "[{}] ({}) {}".format(
+                type(self).__name__, self.id, self.to_dict())
+        else:
+            return "[{}] ({}) {}".format(
+                type(self).__name__, self.id, self.__dict__)
 
     def __repr__(self):
         """return a string representaion
@@ -75,6 +82,7 @@ class BaseModel:
             my_dict["created_at"] = self.created_at.isoformat()
             my_dict["updated_at"] = self.updated_at.isoformat()
         else:
+            # my_dict["__class__"] = str(type(self).__name__)
             my_dict["created_at"] = self.created_at.isoformat()
             my_dict["updated_at"] = self.updated_at.isoformat()
             if my_dict["_sa_instance_state"]:
