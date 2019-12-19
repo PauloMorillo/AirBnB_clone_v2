@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 import os
 from sqlalchemy.orm import sessionmaker, scoped_session
 
+
 class DBStorage:
     """This class store in databases the objects"""
     __session = None
@@ -26,7 +27,7 @@ class DBStorage:
                                               os.getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == "test":
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all()
 
     def all(self, cls=None):
         """returns a dictionary
@@ -34,24 +35,26 @@ class DBStorage:
             returns a dictionary of __object
         """
         a = dict()
-        clasesitas = ['State', 'City', 'Place', 'Review', 'Amenity', 'User']
-        if cls != None:
-            objre = self.__session.query(cls.__name__).all()
-            print("Esto esta botando el all del datastorage", objre)
+        clasesitas = ["State", "City"]
+        # 'User': User,
+        # 'Amenity': Amenity,
+        # 'Place': Place,
+        # 'Review': Review}
+        # if cls != None:
+        # objre = self.__session.query(cls.__name__).all()
+        # print("Esto esta botando el all del datastorage", objre)
+        # for obj in objre:
+        # print("en teoria esto es cada objeto", obj.__dict__)
+        # print("el id en teoria obj.id", obj.id)
+        # a[obj.id] = obj.to_dict()
+        # else:
+        for clase in clasesitas:
+            objre = self.__session.query(eval(clase)).all()
             for obj in objre:
-                print("en teoria esto es cada objeto", obj)
-                print("el id en teoria obj.id", obj.id)
-                a["["+cls.__name__+"]"+"."+obj.id] = obj
-        else:
-            for clase in clasesitas:
-                objre = self.__session.query(eval(clase)).all()
-                print("objre",objre)
-                for obj in objre:
-                    print("cada objeto cuando no hay clase", obj)
-                    print("imprimirle llave", obj.id)
-                    print("este es e nombre", obj.__dict__)
-                    #a["["+type(obj).__name__+"]"+"."+obj.id] = obj
-                    # key = "{}.{}".format(type(obj).__name__, obj.id)
+                # print("cada objeto cuando no hay clase", obj.to_dict())
+                # print("este es el objeto", obj)
+                a[type(obj).__name__+"."+obj.id] = obj
+                # key = "{}.{}".format(type(obj).__name__, obj.id)
         return a
 
     def new(self, obj):
@@ -71,9 +74,9 @@ class DBStorage:
         """Create metadata for all
         """
         Base.metadata.create_all(self.__engine)
-        session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session)
-        self.__session = Session()
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session = scoped_session(Session)
+        self.__session = session()
 
     def delete(self, obj=None):
         """Delete object"""
