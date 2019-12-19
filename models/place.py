@@ -7,6 +7,13 @@ import os
 import models
 
 
+place_amenity = Table(place_amenity, Base.metadata,
+                      Column(place_id, ForeignKey('places_id'),
+                             String(60), nullable=False),
+                      Column(amenity_id, ForeignKey('amenities_id'),
+                             String(60), nullable=False))
+
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -36,6 +43,10 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True, default=0)
         reviews = relationship("Review", cascade="all, delete",
                                backref="place")
+        amenities = relationship("Amenity",
+                                 secondary=place_amenity,
+                                 viewonly=False,
+                                 back_populates="place_amenities")
 
     else:
         city_id = ""
@@ -56,5 +67,14 @@ class Place(BaseModel, Base):
             a = []
             for value in models.storage.all(Review).values():
                 if value.place_id == self.id:
+                    a.append(value)
+            return a
+
+        @property
+        def amenities(self):
+            """returns list of amenities"""
+            a = []
+            for value in models.storage.all(Amenity).values():
+                if value.amenity_id == self.id:
                     a.append(value)
             return a
