@@ -35,7 +35,7 @@ class DBStorage:
             returns a dictionary of __object
         """
         a = dict()
-        clasesitas = ["State", "City", "User"]
+        clasesitas = ["State", "City", "User", "Place"]
         # 'User': User,
         # 'Amenity': Amenity,
         # 'Place': Place,
