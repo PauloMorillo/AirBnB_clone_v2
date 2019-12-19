@@ -13,10 +13,10 @@ metadata = MetaData()
 place_amenity = Table("place_amenity", metadata,
                       Column("place_id", String(60),
                              ForeignKey('places.id'),
-                             nullable=False),
+                             nullable=False, primary_key=True),
                       Column("amenity_id", String(60),
                              ForeignKey('amenities.id'),
-                             nullable=False))
+                             nullable=False, primary_key=True))
 
 
 class Place(BaseModel, Base):
@@ -81,6 +81,11 @@ class Place(BaseModel, Base):
             """returns list of amenities"""
             a = []
             for value in models.storage.all(Amenity).values():
-                if value.amenity_id == self.id:
+                if value.id in amenity_ids:
                     a.append(value)
             return a
+
+        @amenities.setter
+        def amenities(self, obj):
+            """adds Amenity.id to amenity_ids list
+            """
