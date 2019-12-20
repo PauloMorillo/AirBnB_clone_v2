@@ -56,12 +56,12 @@ class BaseModel:
         Return:
             returns a string of class name, id, and dictionary
         """
-        if os.environ.get('HBNB_TYPE_STORAGE') == "db":
-            return "[{}] ({}) {}".format(
-                type(self).__name__, self.id, self.to_dict())
-        else:
-            return "[{}] ({}) {}".format(
-                type(self).__name__, self.id, self.__dict__)
+        # if os.environ.get('HBNB_TYPE_STORAGE') == "db":
+        # return "[{}] ({}) {}".format(
+        # type(self).__name__, self.id, self.to_dict())
+        # else:
+        return "[{}] ({}) {}".format(
+            type(self).__name__, self.id, self.__dict__)
 
     def __repr__(self):
         """return a string representaion
