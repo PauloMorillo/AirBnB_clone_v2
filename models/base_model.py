@@ -18,13 +18,12 @@ class BaseModel:
     for other classes
     """
     id = Column(String(60),
-                primary_key=True,
-                nullable=False)
+                primary_key=True)
     created_at = Column(DateTime,
-                        default=datetime.utcnow,
+                        default=datetime.utcnow(),
                         nullable=False)
     updated_at = Column(DateTime,
-                        default=datetime.utcnow,
+                        default=datetime.utcnow(),
                         nullable=False)
 
     def __init__(self, *args, **kwargs):
@@ -44,6 +43,10 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
+                if "id" not in kwargs:
+                    self.id = self.id = str(uuid.uuid4())
+                if key not in ["created_at", "updated_at"]:
+                    self.created_at = self.updated_at = datetime.now()
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
@@ -53,12 +56,8 @@ class BaseModel:
         Return:
             returns a string of class name, id, and dictionary
         """
-        if os.environ.get('HBNB_TYPE_STORAGE') == "db":
-            return "[{}] ({}) {}".format(
+        return "[{}] ({}) {}".format(
                 type(self).__name__, self.id, self.to_dict())
-        else:
-            return "[{}] ({}) {}".format(
-                type(self).__name__, self.id, self.__dict__)
 
     def __repr__(self):
         """return a string representaion
@@ -78,16 +77,11 @@ class BaseModel:
             returns a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
-        if os.getenv('HBNB_TYPE_STORAGE') != "db":
-            my_dict["__class__"] = str(type(self).__name__)
-            my_dict["created_at"] = self.created_at.isoformat()
-            my_dict["updated_at"] = self.updated_at.isoformat()
-        else:
-            # my_dict["__class__"] = str(type(self).__name__)
-            my_dict["created_at"] = self.created_at.isoformat()
-            my_dict["updated_at"] = self.updated_at.isoformat()
-            if my_dict["_sa_instance_state"]:
-                my_dict.pop("_sa_instance_state")
+        my_dict["__class__"] = str(type(self).__name__)
+        my_dict["created_at"] = self.created_at.isoformat()
+        my_dict["updated_at"] = self.updated_at.isoformat()
+        if my_dict["_sa_instance_state"]:
+            my_dict.pop("_sa_instance_state")
         return my_dict
 
     def delete(self):
