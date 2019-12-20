@@ -53,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
                     # print(arg[0])
                     value = arg[1]
                     # try:x
-                    if arg[1][0] == '"':
+                    if arg[1][0] == '"' and arg[1][-1] = '"':
                         value = arg[1].replace("_", " ").replace('"', "")
                     else:
                         # try:
