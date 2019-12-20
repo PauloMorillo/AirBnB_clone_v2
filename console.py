@@ -52,22 +52,18 @@ class HBNBCommand(cmd.Cmd):
                     # print(arg)
                     # print(arg[0])
                     value = arg[1]
-                    # try:x
-                    if arg[1][0] == '"' and arg[1][-1] == '"':
-                        value = arg[1].replace("_", " ").replace('"', "")
-                    else:
-                        # try:
-                        if value.isdigit():
-                            if "." in value:
-                                # print("es un entero")
-                                # except:
-                                value = float(value)
-                            else:
-                                value = int(value)
+                    try:
+                        if arg[1][0] == '"' and arg[1][-1] == '"':
+                            value = arg[1].replace("_", " ").replace('"', "")
                         else:
+                            try:
+                                value = int(value)
+                                # print("es un entero")
+                            except:
+                                value = float(value)
                                 # print("es un float")
-                            # except:
-                            arg[0] = "LAURAPAULO"
+                    except:
+                        arg[0] = "LAURAPAULO"
 
                     if hasattr(obj, arg[0]):
                         # print("argumento ", arg[0], type(value))
