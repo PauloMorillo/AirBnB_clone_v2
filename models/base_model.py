@@ -45,7 +45,7 @@ class BaseModel:
                     setattr(self, key, value)
                 if "id" not in kwargs:
                     self.id = self.id = str(uuid.uuid4())
-                if key not in ["created_at", "updated_at"]:
+                if key not in ["created_at"]:
                     self.created_at = self.updated_at = datetime.now()
         else:
             self.id = str(uuid.uuid4())
@@ -82,13 +82,14 @@ class BaseModel:
         """
         if os.getenv('HBNB_TYPE_STORAGE') == "db":
             my_dict = dict(self.__dict__)
-            my_dict["__class__"] = str(type(self).__name__)
+            # my_dict["__class__"] = str(type(self).__name__)
             my_dict["created_at"] = self.created_at.isoformat()
             my_dict["updated_at"] = self.updated_at.isoformat()
             if my_dict["_sa_instance_state"]:
                 my_dict.pop("_sa_instance_state")
         else:
             my_dict = dict(self.__dict__)
+            my_dict["__class__"] = str(type(self).__name__)
             my_dict["created_at"] = self.created_at.isoformat()
             my_dict["updated_at"] = self.updated_at.isoformat()
         return my_dict
