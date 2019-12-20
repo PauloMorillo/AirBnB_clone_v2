@@ -58,11 +58,12 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         # try:
                         if value.isdigit():
-                            value = int(value)
-                        elif "." in value:
+                            if "." in value:
                             # print("es un entero")
                             # except:
-                            value = float(value)
+                                value = float(value)
+                            else:
+                                value = int(value)
                         else:
                                 # print("es un float")
                             # except:
