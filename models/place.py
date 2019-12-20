@@ -1,22 +1,20 @@
 #!/usr/bin/python3
 """This is the place class"""
-from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 import os
 import models
-from sqlalchemy import MetaData
+from models.base_model import BaseModel, Base
 
 
-metadata = MetaData()
-
-place_amenity = Table("place_amenity", metadata,
-                      Column("place_id", String(60),
-                             ForeignKey('places.id'),
-                             nullable=False, primary_key=True),
-                      Column("amenity_id", String(60),
-                             ForeignKey('amenities.id'),
-                             nullable=False, primary_key=True))
+if os.environ.get('HBNB_TYPE_STORAGE') == "db":
+    place_amenity = Table("place_amenity", Base.metadata,
+                          Column("place_id", String(60),
+                                 ForeignKey('places.id'),
+                                 nullable=False, primary_key=True),
+                          Column("amenity_id", String(60),
+                                 ForeignKey('amenities.id'),
+                                 nullable=False, primary_key=True))
 
 
 class Place(BaseModel, Base):
@@ -48,10 +46,10 @@ class Place(BaseModel, Base):
         latitude = Column(Float, nullable=True, default=0)
         longitude = Column(Float, nullable=True, default=0)
         reviews = relationship("Review", cascade="all, delete",
-                               backref="place")
+                               backref="Place")
         amenities = relationship("Amenity",
                                  secondary=place_amenity,
-                                 back_populates="place_amenities",
+                                 backref="Place",
                                  viewonly=False)
 
     else:
