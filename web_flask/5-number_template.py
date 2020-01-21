@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ This script starts a flask web application """
 
-from flask import Flask, escape
+from flask import Flask, escape, render_template
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
@@ -43,8 +43,15 @@ def textva2(text):
 def numva(n):
     """ This function returns message getting a vcariable web page """
     # strict_slashes=False
-    msg = "{%d} is a number".format(escape(n))
+    msg = "{} is a number".format(escape(n))
     return msg
+
+
+@app.route('/number_template/<int:n>')
+def numvat(n):
+    """ This function returns the web page from a template folder """
+    templatedata = {'n': n}
+    return render_template("5-number.html", **templatedata)
 
 
 if __name__ == "__main__":

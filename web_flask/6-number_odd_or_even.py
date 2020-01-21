@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ This script starts a flask web application """
 
-from flask import Flask, escape
+from flask import Flask, escape, render_template
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
@@ -30,12 +30,39 @@ def textva(text):
 
 
 @app.route('/python', defaults={'text': "is cool"})
+@app.route('/python/<text>')
 def textva2(text):
     """ This function returns message getting a vcariable web page """
     # strict_slashes=False
     msg = "Python " + escape(text)
     msg = msg.replace("_", " ")
     return msg
+
+
+@app.route('/number/<int:n>')
+def numva(n):
+    """ This function returns message getting a vcariable web page """
+    # strict_slashes=False
+    msg = "{} is a number".format(escape(n))
+    return msg
+
+
+@app.route('/number_template/<int:n>')
+def numvat(n):
+    """ This function returns the web page from a template folder """
+    templatedata = {'n': n}
+    return render_template("5-number.html", **templatedata)
+
+
+@app.route('/number_odd_or_even/<int:n>')
+def numoddeven(n):
+    """ This function returns the web page from a template folder """
+    if (n % 2) is 0:
+        text = "is even"
+    else:
+        text = "is odd"
+    templatedata = {'n': n, 'text': text}
+    return render_template("6-number_odd_or_even.html", **templatedata)
 
 
 if __name__ == "__main__":
