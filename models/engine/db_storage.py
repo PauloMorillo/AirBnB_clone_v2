@@ -78,3 +78,7 @@ class DBStorage:
         """Delete object"""
         if obj is not None:
             self.__session.delete(obj)
+
+    def close(self):
+        """ close session calling method remove or close """
+        self.__session.remove()

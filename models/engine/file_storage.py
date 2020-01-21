@@ -71,3 +71,7 @@ class FileStorage:
                 if obj == values:
                     break
             self.__objects.pop(key)
+
+    def close(self):
+        """ use reload to desearialize the JSON file to objs """
+        reload()
