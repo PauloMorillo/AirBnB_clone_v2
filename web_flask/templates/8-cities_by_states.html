@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+        <H1>States</H1> 
+	<UL>
+	{% for tupkv in states.values()|sort(attribute='name') %}
+         <li>{{ tupkv.id }}: <B>{{ tupkv.name }}</B></li>
+        {% for temtupkv in templatedata.values()|sort(attribute='name') %}
+	 {% if temtupkv.state_id == tupkv.id %}
+	 <UL>
+	 <li> {{temtupkv.id}}: <B>{{ temtupkv.name }}</B></li>
+	 </UL>
+	 {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+</UL>
+    </BODY>
+</HTML>
