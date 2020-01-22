@@ -7,14 +7,15 @@
         <H1>States</H1> 
 	<UL>
 	{% for tupkv in states.values()|sort(attribute='name') %}
-         <li>{{ tupkv.id }}: <B>{{ tupkv.name }}</B></li>
+         <li>{{ tupkv.id }}: <B>{{ tupkv.name }}</B>
+	 <UL>
         {% for temtupkv in templatedata.values()|sort(attribute='name') %}
 	 {% if temtupkv.state_id == tupkv.id %}
-	 <UL>
 	 <li> {{temtupkv.id}}: <B>{{ temtupkv.name }}</B></li>
-	 </UL>
 	 {% endif %}
         {% endfor %}
+	 </UL>
+	 </LI>
         {% endfor %}
 
 </UL>
