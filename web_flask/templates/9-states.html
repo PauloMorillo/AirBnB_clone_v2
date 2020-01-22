@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+      {% for tupkv in states.values()|sort(attribute='name') %}
+        <H1>State: {{ tupkv.name }}</H1> 
+        {% endfor %}
+	<H3>Cities:</H3>
+	<UL>
+	{% for temtupkv in templatedata.values()|sort(attribute='name') %}
+	 <li> {{temtupkv.id}}: <B>{{ temtupkv.name }}</B></li>
+        {% endfor %}
+	 </UL>
+    </BODY>
+</HTML>
