@@ -4,7 +4,8 @@
         <TITLE>HBNB</TITLE>
     </HEAD>
     <BODY>
-      {% for tupkv in states.values()|sort(attribute='name') %}
+      {% if states %}
+     {% for tupkv in states.values()|sort(attribute='name') %}
         <H1>State: {{ tupkv.name }}</H1> 
         {% endfor %}
 	<H3>Cities:</H3>
@@ -13,5 +14,8 @@
 	 <li> {{temtupkv.id}}: <B>{{ temtupkv.name }}</B></li>
         {% endfor %}
 	 </UL>
+	{% else %}
+	<H1>Not found!</H1>
+	{% endif %}
     </BODY>
 </HTML>
