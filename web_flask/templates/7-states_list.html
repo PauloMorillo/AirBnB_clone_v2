@@ -5,6 +5,9 @@
     </HEAD>
     <BODY>
         <H1>States</H1>
-	<li>{{ State['id'] }} </li>
+	<UL>
+	{% for item in States|dictsort(false, 'value') %}
+	<LI>{{ item[0] }}: <B>{{ item[1] }}</B></LI>
+	{% endfor %}
     </BODY>
 </HTML>
