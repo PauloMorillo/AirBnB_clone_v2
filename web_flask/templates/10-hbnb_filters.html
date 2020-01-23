@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="static/styles/4-common.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/3-header.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/3-footer.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/6-filters.css">
+    <link rel="icon" href="images/icon.png" />
+    <title>HBnB</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo"></div>
+    </header>
+    <div class="container">
+      <section class="filters">
+	<div class="locations">
+	  <h3>States</h3>
+	  <h4>&nbsp;</h4>
+	  <div class="popover">
+	    <ul>
+	      <li>
+        {% for tupkv in states.values()|sort(attribute='name') %}
+         <h2>{{ tupkv.name }}</h2>
+         <ul>
+        {% for temtupkv in templatedata.values()|sort(attribute='name') %}
+         {% if temtupkv.state_id == tupkv.id %}
+         <li>{{ temtupkv.name }}</li>
+         {% endif %}
+        {% endfor %}
+         </ul>
+         </li>
+        {% endfor %}
+	    </ul>
+	  </div>
+	</div>
+	<div class="amenities">
+	  <h3>Amenities</h3>
+	  <h4>&nbsp;</h4>
+	  <div class="popover">
+	    <ul>
+	      {% for tupkv in amenities.values()|sort(attribute='name') %}
+	      <li>{{ tupkv.name }}</li>
+	      {% endfor %}
+	    </ul>
+	  </div>
+	</div>
+	<button type="button">Search</button>
+      </section>
+    </div>
+    <footer>
+      <p>Holberton School</p>
+    </footer>
+  </body>
+</html>
